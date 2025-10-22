@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 import MainLayout from './components/MainLayout';
@@ -17,7 +17,7 @@ import ReportsPage from './pages/ReportsPage';
 function App() {
   return (
     <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-      <BrowserRouter basename={import.meta.env.BASE_URL || '/'}>
+      <HashRouter >
         <Routes>
           {/* Rutas que no usan el layout del dashboard */}
           <Route path="/" element={<LandingPage />} />
@@ -36,7 +36,7 @@ function App() {
             <Route path="reports" element={<ReportsPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </Box>
   );
 }
