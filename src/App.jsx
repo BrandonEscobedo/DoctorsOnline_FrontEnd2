@@ -1,7 +1,7 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
+import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import MainLayout from './components/MainLayout';
 import LandingPage from './pages/LandingPage';
@@ -28,7 +28,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Rutas del panel principal, ahora accesibles para todos */}
-          <Route element={<MainLayout />}>
+          <Route path="/" element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/patients" element={<PatientsPage />} />
             <Route path="/patients/:patientId" element={<PatientRecordPage />} />
