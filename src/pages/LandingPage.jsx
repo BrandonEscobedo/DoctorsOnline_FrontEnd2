@@ -91,7 +91,7 @@ const LandingPage = () => {
               fontSize: '14px',
               fontWeight: '600'
             }}>
-              🏆 Certificado por el Consejo Mexicano de Psiquiatría
+              🏆 aa por el Consejo Mexicano de Psiquiatría
             </div>
             <h1 style={{ fontSize: '52px', fontWeight: '800', marginBottom: '20px', lineHeight: '1.2' }}>
               Tu Salud Mental Merece Atención Especializada
@@ -106,7 +106,7 @@ const LandingPage = () => {
             </p>
             <div style={{ display: 'flex', gap: '20px' }}>
               <button
-                onClick={() => navigate('/medical-form')}
+                onClick={() => navigate('/dashboard')}
                 style={{
                   background: colors.white,
                   color: colors.primary,
