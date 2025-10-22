@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const colors = {
-  primary: '#7C3AED',
-  secondary: '#EC4899',
-  accent: '#10B981',
-  dark: '#1F2937',
-  darkLight: '#374151',
-  light: '#F9FAFB',
-  white: '#FFFFFF',
-  gradient1: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  gradient2: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  gradient3: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  primary: '#457B9D',      // azul para acentos y títulos
+  secondary: '#F4A261',    // naranja pastel para botones y resaltados
+  accent: '#E76F51',       // rojo pastel para detalles
+  dark: '#1D3557',         // azul oscuro para textos principales
+  darkLight: '#2A4D69',    // azul medio para párrafos y subtítulos
+  light: '#F1FAEE',        // fondo claro pastel
+  white: '#FFFFFF',         // blanco
+  gradient1: 'linear-gradient(135deg, #A8DADC 0%, #457B9D 100%)',
+  gradient2: 'linear-gradient(135deg, #F4A261 0%, #E76F51 100%)',
+  gradient3: 'linear-gradient(135deg, #FFE5D9 0%, #FAD2E1 100%)',
 };
 
 const LandingPage = () => {
@@ -91,7 +91,7 @@ const LandingPage = () => {
               fontSize: '14px',
               fontWeight: '600'
             }}>
-              🏆 aa por el Consejo Mexicano de Psiquiatría
+              🏆 Certificado por el Consejo Mexicano de Psiquiatría
             </div>
             <h1 style={{ fontSize: '52px', fontWeight: '800', marginBottom: '20px', lineHeight: '1.2' }}>
               Tu Salud Mental Merece Atención Especializada
@@ -106,7 +106,7 @@ const LandingPage = () => {
             </p>
             <div style={{ display: 'flex', gap: '20px' }}>
               <button
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/medical-form')}
                 style={{
                   background: colors.white,
                   color: colors.primary,
@@ -206,45 +206,43 @@ const LandingPage = () => {
               Atención integral y especializada para diversas necesidades de salud mental
             </p>
           </div>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px' }}>
+  {services.map((service, index) => (
+    <div
+      key={index}
+      style={{
+        background: colors.white,
+        color: colors.dark,
+        padding: '40px',
+        borderRadius: '20px',
+        cursor: 'pointer',
+        transition: 'all 0.3s',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = colors.gradient1;
+        e.currentTarget.style.color = colors.white;
+        e.currentTarget.style.transform = 'translateY(-10px)';
+        e.currentTarget.style.boxShadow = '0 20px 60px rgba(124, 58, 237, 0.3)';
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = colors.white;
+        e.currentTarget.style.color = colors.dark;
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '20px' }}>{service.icon}</div>
+      <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '15px' }}>
+        {service.title}
+      </h3>
+      <p style={{ fontSize: '16px', lineHeight: '1.7', opacity: 0.85 }}>
+        {service.description}
+      </p>
+    </div>
+  ))}
+</div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px' }}>
-            {services.map((service, index) => (
-              <div
-                key={index}
-                onClick={() => setActiveService(index)}
-                style={{
-                  background: activeService === index ? colors.gradient1 : colors.white,
-                  color: activeService === index ? colors.white : colors.dark,
-                  padding: '40px',
-                  borderRadius: '20px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  boxShadow: activeService === index ? '0 20px 60px rgba(124, 58, 237, 0.3)' : '0 10px 30px rgba(0,0,0,0.1)',
-                  transform: activeService === index ? 'translateY(-10px)' : 'translateY(0)'
-                }}
-                onMouseOver={(e) => {
-                  if (activeService !== index) {
-                    e.currentTarget.style.transform = 'translateY(-5px)';
-                    e.currentTarget.style.boxShadow = '0 15px 40px rgba(0,0,0,0.15)';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (activeService !== index) {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
-                  }
-                }}
-              >
-                <div style={{ fontSize: '48px', marginBottom: '20px' }}>{service.icon}</div>
-                <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '15px' }}>
-                  {service.title}
-                </h3>
-                <p style={{ fontSize: '16px', lineHeight: '1.7', opacity: activeService === index ? 0.95 : 0.8 }}>
-                  {service.description}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -314,8 +312,7 @@ const LandingPage = () => {
             <h2 style={{ fontSize: '48px', fontWeight: '800', marginBottom: '20px' }}>
               ¿Por Qué Elegir Mi Consulta?
             </h2>
-            <p style={{ fontSize: '20px', opacity: 0.9, maxWidth: '700px', margin: '0 auto' }}>
-              Un enfoque profesional, empático y basado en evidencia científica
+            <p style={{ fontSize: '16px', lineHeight: '1.7', opacity: 0.95, color: colors.white }}>              Un enfoque profesional, empático y basado en evidencia científica
             </p>
           </div>
 
@@ -383,7 +380,7 @@ const LandingPage = () => {
             y estoy aquí para acompañarte en cada paso del camino.
           </p>
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/medical-form')}
             style={{
               background: colors.gradient1,
               color: colors.white,

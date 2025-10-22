@@ -6,9 +6,19 @@ import {
   Typography,
   MenuItem,
   Paper,
-  Divider,
+  Divider
 } from "@mui/material";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+
+const colors = {
+  primary: '#457B9D',      // Azul pastel
+  secondary: '#F4A261',    // Naranja pastel
+  accent: '#E76F51',       // Rojo pastel
+  dark: '#1D3557',         
+  darkLight: '#2A4D69',    
+  light: '#F1FAEE',        
+  white: '#FFFFFF',         
+};
 
 const MedicalFormPage = () => {
   const [formData, setFormData] = useState({
@@ -23,13 +33,10 @@ const MedicalFormPage = () => {
     medicamentos: "",
   });
 
-  // estado para almacenar los errores de validación.
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    //  la validación en tiempo real para la edad.
     if (name === "edad") {
       if (value === "" || Number(value) >= 0) {
         setFormData({ ...formData, [name]: value });
@@ -39,52 +46,23 @@ const MedicalFormPage = () => {
     }
   };
 
-  // función que valida todos los campos.
   const validate = () => {
     let tempErrors = {};
-
-    // Nombre: no puede estar vacío.
-    if (!formData.nombre.trim()) {
-      tempErrors.nombre = "El nombre es obligatorio.";
-    }
-
-    // Edad: no puede estar vacía y debe ser un número razonable.
-    if (!formData.edad) {
-      tempErrors.edad = "La edad es obligatoria.";
-    } else if (formData.edad > 120) {
-      tempErrors.edad = "La edad no parece válida.";
-    }
-
-    // Sexo: debe ser seleccionado.
-    if (!formData.sexo) {
-      tempErrors.sexo = "Debe seleccionar un sexo.";
-    }
-
-    // Teléfono (opcional): si se ingresa, debe tener un formato válido.
-    // Esta es una validación simple que verifica si son entre 7 y 15 dígitos.
-    if (formData.telefono && !/^\d{7,15}$/.test(formData.telefono)) {
-      tempErrors.telefono = "El número de teléfono no es válido.";
-    }
-
-    // Motivo de consulta: no puede estar vacío.
-    if (!formData.motivoConsulta.trim()) {
-      tempErrors.motivoConsulta = "El motivo de la consulta es obligatorio.";
-    }
-
+    if (!formData.nombre.trim()) tempErrors.nombre = "El nombre es obligatorio.";
+    if (!formData.edad) tempErrors.edad = "La edad es obligatoria.";
+    else if (formData.edad > 120) tempErrors.edad = "La edad no parece válida.";
+    if (!formData.sexo) tempErrors.sexo = "Debe seleccionar un sexo.";
+    if (formData.telefono && !/^\d{7,15}$/.test(formData.telefono)) tempErrors.telefono = "El número de teléfono no es válido.";
+    if (!formData.motivoConsulta.trim()) tempErrors.motivoConsulta = "El motivo de la consulta es obligatorio.";
     setErrors(tempErrors);
-
-    // La función devuelve `true` si no hay errores, y `false` si los hay.
     return Object.keys(tempErrors).length === 0;
   };
 
-  //  handleSubmit para que llame a la función de validación.
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Si la validación es exitosa (devuelve true)...
     if (validate()) {
       console.log("Datos del paciente:", formData);
-      alert(" Formulario enviado correctamente");
+      alert("Formulario enviado correctamente");
     }
   };
 
@@ -95,31 +73,40 @@ const MedicalFormPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: "#e8f5e9",
-        p: 2,
+        bgcolor: colors.light,
+        p: 3,
       }}
     >
-      <Paper elevation={6} sx={{ maxWidth: 600, width: "100%", p: 4, borderRadius: 4, bgcolor: "white" }}>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <LocalHospitalIcon sx={{ fontSize: 40, color: "#1976d2", mr: 1 }} />
-          <Typography variant="h5" fontWeight="bold" color="primary">
+      <Paper 
+        elevation={3} 
+        sx={{ maxWidth: 600, width: "100%", p: 5, borderRadius: 3, bgcolor: colors.white }}
+      >
+        <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
+          <LocalHospitalIcon sx={{ fontSize: 50, color: colors.primary, mb: 1 }} />
+          <Typography variant="h4" fontWeight="bold" color={colors.dark}>
             Formulario Médico
           </Typography>
         </Box>
 
-        <Divider sx={{ mb: 3 }} />
+        <Divider sx={{ mb: 4 }} />
 
         <form onSubmit={handleSubmit}>
+          {/** Campos lineales, más grandes **/}
           <TextField
             fullWidth
             label="Nombre completo"
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            margin="normal"
             required
             error={!!errors.nombre}
             helperText={errors.nombre}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
           />
 
           <TextField
@@ -129,11 +116,15 @@ const MedicalFormPage = () => {
             type="number"
             value={formData.edad}
             onChange={handleChange}
-            margin="normal"
             required
-            inputProps={{ min: 0 }}
             error={!!errors.edad}
             helperText={errors.edad}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
           />
 
           <TextField
@@ -143,10 +134,15 @@ const MedicalFormPage = () => {
             name="sexo"
             value={formData.sexo}
             onChange={handleChange}
-            margin="normal"
             required
             error={!!errors.sexo}
             helperText={errors.sexo}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
           >
             <MenuItem value="Masculino">Masculino</MenuItem>
             <MenuItem value="Femenino">Femenino</MenuItem>
@@ -159,12 +155,29 @@ const MedicalFormPage = () => {
             name="telefono"
             value={formData.telefono}
             onChange={handleChange}
-            margin="normal"
             error={!!errors.telefono}
             helperText={errors.telefono}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
           />
 
-          <TextField fullWidth label="Dirección" name="direccion" value={formData.direccion} onChange={handleChange} margin="normal" />
+          <TextField
+            fullWidth
+            label="Dirección"
+            name="direccion"
+            value={formData.direccion}
+            onChange={handleChange}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
+          />
 
           <TextField
             fullWidth
@@ -172,19 +185,82 @@ const MedicalFormPage = () => {
             name="motivoConsulta"
             value={formData.motivoConsulta}
             onChange={handleChange}
-            margin="normal"
             multiline
-            rows={2}
+            rows={3}
             required
             error={!!errors.motivoConsulta}
             helperText={errors.motivoConsulta}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
           />
 
-          <TextField fullWidth label="Alergias" name="alergias" value={formData.alergias} onChange={handleChange} margin="normal" multiline rows={2} />
-          <TextField fullWidth label="Antecedentes médicos" name="antecedentes" value={formData.antecedentes} onChange={handleChange} margin="normal" multiline rows={2} />
-          <TextField fullWidth label="Medicamentos actuales" name="medicamentos" value={formData.medicamentos} onChange={handleChange} margin="normal" multiline rows={2} />
+          <TextField
+            fullWidth
+            label="Alergias"
+            name="alergias"
+            value={formData.alergias}
+            onChange={handleChange}
+            multiline
+            rows={2}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
+          />
 
-          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 3, borderRadius: 3, fontWeight: "bold", py: 1.5, fontSize: "1rem", bgcolor: "#1976d2", "&:hover": { bgcolor: "#1565c0" } }}>
+          <TextField
+            fullWidth
+            label="Antecedentes médicos"
+            name="antecedentes"
+            value={formData.antecedentes}
+            onChange={handleChange}
+            multiline
+            rows={2}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
+          />
+
+          <TextField
+            fullWidth
+            label="Medicamentos actuales"
+            name="medicamentos"
+            value={formData.medicamentos}
+            onChange={handleChange}
+            multiline
+            rows={2}
+            margin="normal"
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            sx={{
+              mt: 4,
+              py: 1.8,
+              fontSize: '1.2rem',
+              borderRadius: 2,
+              fontWeight: 'bold',
+              bgcolor: colors.primary,
+              color: colors.white,
+              "&:hover": { bgcolor: colors.dark }
+            }}
+          >
             Enviar formulario
           </Button>
         </form>
