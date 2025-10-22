@@ -21,8 +21,8 @@ function App() {
     <Route path="/" element={<LandingPage />} />
     <Route path="/medical-form" element={<MedicalFormPage />} />
 
-    <Route path="/dashboard" element={<MainLayout />}>
-      <Route index element={<DashboardPage />} />
+    <Route path="/" element={<MainLayout />}>
+      <Route path="dashboard" element={<DashboardPage />} />
       <Route path="patients" element={<PatientsPage />} />
       <Route path="patients/:patientId" element={<PatientRecordPage />} />
       <Route path="appointments" element={<AppointmentsPage />} />
