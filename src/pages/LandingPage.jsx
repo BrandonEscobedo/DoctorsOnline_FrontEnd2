@@ -82,11 +82,11 @@ const LandingPage = () => {
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
           <div style={{ color: colors.white, zIndex: 2 }}>
-            <div style={{ 
-              display: 'inline-block', 
-              background: 'rgba(255,255,255,0.2)', 
-              padding: '8px 20px', 
-              borderRadius: '30px', 
+            <div style={{
+              display: 'inline-block',
+              background: 'rgba(255,255,255,0.2)',
+              padding: '8px 20px',
+              borderRadius: '30px',
               marginBottom: '20px',
               fontSize: '14px',
               fontWeight: '600'
@@ -97,11 +97,11 @@ const LandingPage = () => {
               Tu Salud Mental Merece Atención Especializada
             </h1>
             <p style={{ fontSize: '20px', marginBottom: '30px', lineHeight: '1.6', opacity: 0.95 }}>
-              DR. VÍCTOR ISRAEL RODRÍGUEZ GONZÁLEZ<br/>
+              DR. VÍCTOR ISRAEL RODRÍGUEZ GONZÁLEZ<br />
               <span style={{ fontSize: '18px' }}>Psiquiatra y Psicoterapeuta</span>
             </p>
             <p style={{ fontSize: '18px', marginBottom: '40px', lineHeight: '1.7', opacity: 0.9 }}>
-              Especialista en atención de género, trauma, violencia y psicoterapia psicoanalítica. 
+              Especialista en atención de género, trauma, violencia y psicoterapia psicoanalítica.
               Ofrezco un espacio seguro, confidencial y profesional para tu bienestar emocional.
             </p>
             <div style={{ display: 'flex', gap: '20px' }}>
@@ -158,24 +158,24 @@ const LandingPage = () => {
               padding: '40px',
               border: '2px solid rgba(255,255,255,0.2)'
             }}>
-              <img 
-                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600" 
-                alt="Consultorio" 
+              <img
+                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600"
+                alt="Consultorio"
                 style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
               />
             </div>
           </div>
         </div>
-        
+
         <div style={{ position: 'absolute', top: '10%', right: '5%', width: '300px', height: '300px', background: colors.gradient2, borderRadius: '50%', opacity: 0.1, filter: 'blur(80px)' }}></div>
         <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: '250px', height: '250px', background: colors.gradient3, borderRadius: '50%', opacity: 0.1, filter: 'blur(80px)' }}></div>
       </section>
 
       <section style={{ background: colors.white, padding: '60px 20px', marginTop: '-40px', position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(4, 1fr)', 
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '30px',
             background: colors.white,
             borderRadius: '20px',
@@ -251,19 +251,19 @@ const LandingPage = () => {
       <section id="sobre-mi" style={{ background: colors.white, padding: '100px 20px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
           <div>
-            <img 
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600" 
-              alt="Dr. Víctor Rodríguez" 
+            <img
+              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600"
+              alt="Dr. Víctor Rodríguez"
               style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
             />
           </div>
           <div>
-            <div style={{ 
-              display: 'inline-block', 
-              background: colors.gradient1, 
+            <div style={{
+              display: 'inline-block',
+              background: colors.gradient1,
               color: colors.white,
-              padding: '8px 20px', 
-              borderRadius: '30px', 
+              padding: '8px 20px',
+              borderRadius: '30px',
               marginBottom: '20px',
               fontSize: '14px',
               fontWeight: '600'
@@ -379,11 +379,11 @@ const LandingPage = () => {
             Da el Primer Paso Hacia tu Bienestar
           </h2>
           <p style={{ fontSize: '20px', color: colors.darkLight, marginBottom: '40px', lineHeight: '1.7' }}>
-            Agenda tu cita de manera fácil y rápida. Tu salud mental es prioridad, 
+            Agenda tu cita de manera fácil y rápida. Tu salud mental es prioridad,
             y estoy aquí para acompañarte en cada paso del camino.
           </p>
           <button
-            onClick={() => window.location.href = '/medical-form'}
+            onClick={() => navigate('/dashboard')}
             style={{
               background: colors.gradient1,
               color: colors.white,
@@ -433,8 +433,8 @@ const LandingPage = () => {
             <div>
               <h4 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '20px' }}>Información</h4>
               <p style={{ opacity: 0.8, lineHeight: '1.7' }}>
-                Certificado por el Consejo Mexicano de Psiquiatría<br/>
-                Consultas presenciales y en línea<br/>
+                Certificado por el Consejo Mexicano de Psiquiatría<br />
+                Consultas presenciales y en línea<br />
                 Atención confidencial y profesional
               </p>
             </div>
