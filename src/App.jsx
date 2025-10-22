@@ -13,11 +13,11 @@ import PatientsPage from './pages/PatientsPage';
 import AppointmentsPage from './pages/AppointmentsPage';
 import PatientRecordPage from './pages/PatientRecordPage';
 import ReportsPage from './pages/ReportsPage';
- 
+
 function App() {
   return (
     <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL || '/'}>
         <Routes>
           {/* Rutas que no usan el layout del dashboard */}
           <Route path="/" element={<LandingPage />} />
