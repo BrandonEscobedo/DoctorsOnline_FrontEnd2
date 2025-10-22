@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const colors = {
   primary: '#7C3AED',
@@ -15,6 +16,7 @@ const colors = {
 
 const LandingPage = () => {
   const [activeService, setActiveService] = useState(0);
+  const navigate = useNavigate();
 
   const services = [
     {
@@ -104,7 +106,7 @@ const LandingPage = () => {
             </p>
             <div style={{ display: 'flex', gap: '20px' }}>
               <button
-                onClick={() => window.location.href = '/medical-form'}
+                onClick={() => navigate('/medical-form')}
                 style={{
                   background: colors.white,
                   color: colors.primary,

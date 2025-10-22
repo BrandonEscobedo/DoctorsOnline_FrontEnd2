@@ -28,7 +28,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Rutas del panel principal, ahora accesibles para todos */}
-          <Route element={<MainLayout />}>
+          <Route path="/" element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/patients" element={<PatientsPage />} />
             <Route path="/patients/:patientId" element={<PatientRecordPage />} />
