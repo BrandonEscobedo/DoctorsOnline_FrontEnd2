@@ -13,7 +13,7 @@ import PatientsPage from './pages/PatientsPage';
 import AppointmentsPage from './pages/AppointmentsPage';
 import PatientRecordPage from './pages/PatientRecordPage';
 import ReportsPage from './pages/ReportsPage';
-
+  
 function App() {
   return (
     <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh' }}>
@@ -29,7 +29,7 @@ function App() {
 
           {/* Rutas del panel principal, ahora accesibles para todos */}
           <Route path='/' element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
             <Route path="/patients" element={<PatientsPage />} />
             <Route path="/patients/:patientId" element={<PatientRecordPage />} />
             <Route path="/appointments" element={<AppointmentsPage />} />
