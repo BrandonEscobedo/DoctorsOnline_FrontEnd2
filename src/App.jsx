@@ -16,20 +16,21 @@ import ReportsPage from './pages/ReportsPage';
 function App() {
   return (
     <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-   <BrowserRouter basename={import.meta.env.BASE_URL || '/'}>
-  <Routes>
-    <Route path="/" element={<LandingPage />} />
-    <Route path="/medical-form" element={<MedicalFormPage />} />
-
-    <Route path="/" element={<MainLayout />}>
-      <Route path="dashboard" element={<DashboardPage />} />
-      <Route path="patients" element={<PatientsPage />} />
-      <Route path="patients/:patientId" element={<PatientRecordPage />} />
-      <Route path="appointments" element={<AppointmentsPage />} />
-      <Route path="reports" element={<ReportsPage />} />
-    </Route>
-  </Routes>
-</BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL || '/'}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/medical-form" element={<MedicalFormPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="patients" element={<PatientsPage />} />
+            <Route path="patients/:patientId" element={<PatientRecordPage />} />
+            <Route path="appointments" element={<AppointmentsPage />} />
+            <Route path="reports" element={<ReportsPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </Box>
   );
 }
