@@ -12,6 +12,7 @@ import PatientsPage from './pages/PatientsPage';
 import AppointmentsPage from './pages/AppointmentsPage';
 import PatientRecordPage from './pages/PatientRecordPage';
 import ReportsPage from './pages/ReportsPage';
+import SolicitudesCitas from './pages/SolicitudesCitas';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="patients" element={<PatientsPage />} />
+            <Route path="SolicitudesCitas" element={<SolicitudesCitas />} />
             <Route path="patients/:patientId" element={<PatientRecordPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="reports" element={<ReportsPage />} />

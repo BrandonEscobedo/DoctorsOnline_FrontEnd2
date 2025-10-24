@@ -11,13 +11,13 @@ import {
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 const colors = {
-  primary: '#457B9D',      // Azul pastel
-  secondary: '#F4A261',    // Naranja pastel
-  accent: '#E76F51',       // Rojo pastel
-  dark: '#1D3557',         
-  darkLight: '#2A4D69',    
-  light: '#F1FAEE',        
-  white: '#FFFFFF',         
+  primary: '#457B9D',
+  secondary: '#F4A261',
+  accent: '#E76F51',
+  dark: '#1D3557',
+  darkLight: '#2A4D69',
+  light: '#F1FAEE',
+  white: '#FFFFFF',
 };
 
 const MedicalFormPage = () => {
@@ -31,6 +31,7 @@ const MedicalFormPage = () => {
     alergias: "",
     antecedentes: "",
     medicamentos: "",
+    fechaCita: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -54,6 +55,14 @@ const MedicalFormPage = () => {
     if (!formData.sexo) tempErrors.sexo = "Debe seleccionar un sexo.";
     if (formData.telefono && !/^\d{7,15}$/.test(formData.telefono)) tempErrors.telefono = "El número de teléfono no es válido.";
     if (!formData.motivoConsulta.trim()) tempErrors.motivoConsulta = "El motivo de la consulta es obligatorio.";
+    // validar fecha de cita
+    if (!formData.fechaCita) tempErrors.fechaCita = "La fecha y hora de la cita son obligatorias.";
+    else {
+      const selected = new Date(formData.fechaCita);
+      const now = new Date();
+      if (isNaN(selected.getTime())) tempErrors.fechaCita = "Fecha inválida.";
+      else if (selected < now) tempErrors.fechaCita = "La fecha de la cita debe ser en el futuro.";
+    }
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -77,8 +86,8 @@ const MedicalFormPage = () => {
         p: 3,
       }}
     >
-      <Paper 
-        elevation={3} 
+      <Paper
+        elevation={3}
         sx={{ maxWidth: 600, width: "100%", p: 5, borderRadius: 3, bgcolor: colors.white }}
       >
         <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
@@ -241,6 +250,26 @@ const MedicalFormPage = () => {
             margin="normal"
             sx={{
               "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.1rem', padding: '14px' },
+              "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
+              "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
+            }}
+          />
+
+          {/* Campo fecha y hora de la cita */}
+          <TextField
+            fullWidth
+            label="Fecha y hora de la cita"
+            name="fechaCita"
+            type="datetime-local"
+            value={formData.fechaCita}
+            onChange={handleChange}
+            required
+            error={!!errors.fechaCita}
+            helperText={errors.fechaCita}
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            sx={{
+              "& .MuiInputBase-input": { color: colors.dark, fontSize: '1.05rem', padding: '12px' },
               "& .MuiFormLabel-root": { color: colors.darkLight, fontSize: '1rem' },
               "& .MuiOutlinedInput-root": { bgcolor: colors.light, borderRadius: 2 }
             }}

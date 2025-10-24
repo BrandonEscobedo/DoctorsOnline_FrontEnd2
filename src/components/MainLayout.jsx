@@ -101,7 +101,7 @@ export default function MainLayout() {
     const navItems = [
         { text: 'Panel', icon: <DashboardIcon />, path: '/dashboard' },
         { text: 'Pacientes', icon: <PeopleIcon />, path: '/patients' },
-        { text: 'Solicitudes de citas', icon: <EventNoteIcon />, path: '/appointments' },
+        { text: 'Solicitudes de citas', icon: <EventNoteIcon />, path: '/SolicitudesCitas' },
         { text: 'Citas', icon: <EventNoteIcon />, path: '/appointments' },
     ];
 

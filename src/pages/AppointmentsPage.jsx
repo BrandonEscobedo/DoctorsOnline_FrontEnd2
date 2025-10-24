@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '/src/supabase-client.js';
-import { 
-  Box, Typography, Paper, Button, TextField, Dialog, DialogActions, 
-  DialogContent, DialogTitle, MenuItem, FormControl, InputLabel, Select 
+import {
+  Box, Typography, Paper, Button, TextField, Dialog, DialogActions,
+  DialogContent, DialogTitle, MenuItem, FormControl, InputLabel, Select
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -63,7 +63,7 @@ const AppointmentsPage = () => {
       setAppointments(formattedData);
     }
   };
-  
+
   const handleOpen = (slotInfo) => {
     if (slotInfo.start) setFormData({ title: '', start: slotInfo.start, idpaciente: '' });
     setOpen(true);
@@ -78,10 +78,10 @@ const AppointmentsPage = () => {
   const handleSelectEvent = (appointment) => {
     setSelectedAppointment(appointment);
     // Al editar, poblamos el formulario con los datos guardados, incluyendo el paciente
-    setFormData({ 
-      title: appointment.title, 
-      start: appointment.start, 
-      idpaciente: appointment.idpaciente 
+    setFormData({
+      title: appointment.title,
+      start: appointment.start,
+      idpaciente: appointment.idpaciente
     });
     setOpen(true);
   };
@@ -99,11 +99,11 @@ const AppointmentsPage = () => {
         hora: moment(formData.start).format('HH:mm:ss'),
         descripcion: formData.title,
         // 3. Usamos el idpaciente seleccionado del formulario
-        idpaciente: formData.idpaciente, 
+        idpaciente: formData.idpaciente,
         iddoctor: 1,   // Placeholder, puedes cambiarlo después
         estado: 'programada'
       };
-      
+
       if (selectedAppointment) { // Actualizar
         const { error } = await supabase.from('cita').update(eventData).eq('idcita', selectedAppointment.idcita);
         if (error) throw error;
@@ -149,7 +149,7 @@ const AppointmentsPage = () => {
               name="idpaciente"
               value={formData.idpaciente}
               label="Paciente"
-              onChange={(e) => setFormData({...formData, idpaciente: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, idpaciente: e.target.value })}
             >
               {patients.map((patient) => (
                 <MenuItem key={patient.idpaciente} value={patient.idpaciente}>
