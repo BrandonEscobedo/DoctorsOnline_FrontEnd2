@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '/src/supabase-client.js';
 import { styled } from '@mui/material/styles';
-import { 
-  Box, Typography, Divider, Grid, Card, CardContent, 
-  CardHeader, CircularProgress, Alert 
+import {
+  Box, Typography, Divider, Grid, Card, CardContent,
+  CardHeader, CircularProgress, Alert
 } from '@mui/material';
 import moment from 'moment';
 
@@ -23,7 +23,7 @@ const CustomCard = styled(Card)(({ theme }) => ({
   backgroundColor: palette.background, // <-- CAMBIO: Usamos el beige claro
   gap: theme.spacing(1), borderRadius: theme.spacing(2),
   boxShadow: 'hsla(220, 30%, 5%, 0.1) 0px 8px 25px 0px, hsla(220, 25%, 10%, 0.15) 0px 25px 50px -10px',
-  height: '100%', 
+  height: '100%',
 }));
 
 export default function DashboardPage() {
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           </CardContent>
         </CustomCard>
       </Grid>
-      
+
       <Grid item xs={12} md={8}>
         <CustomCard>
           {/* <-- CAMBIO: Color y peso para el título */}
@@ -149,7 +149,7 @@ export default function DashboardPage() {
                 {/* <-- CAMBIO: Color de texto principal */}
                 <Typography variant="body2" color={palette.text}>
                   <b>Diagnóstico Principal:</b> {latestPatient.historialmedico?.[0]?.diagnostico || 'No registrado.'}
-                  <br/>
+                  <br />
                   <b>Tratamiento Actual:</b> {latestPatient.historialmedico?.[0]?.tratamiento || 'No registrado.'}
                 </Typography>
               </>

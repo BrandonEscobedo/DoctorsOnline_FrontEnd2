@@ -30,36 +30,54 @@ const AppointmentsPage = () => {
 
   // 2. Usamos useEffect para cargar tanto citas como pacientes al iniciar
   useEffect(() => {
-    fetchAppointments();
-    fetchPatients();
+    // Cargamos primero los pacientes para poder mapear el nombre del paciente
+    const init = async () => {
+      const patientsData = await fetchPatients();
+      await fetchAppointments(patientsData);
+    };
+    init();
   }, []);
 
   const fetchPatients = async () => {
     const { data, error } = await supabase.from('paciente').select('idpaciente, nombres, apellidos');
     if (error) {
       console.error('Error fetching patients:', error);
+      return [];
     } else {
       setPatients(data);
+      return data;
     }
   };
 
-  const fetchAppointments = async () => {
-    // Pedimos también el idpaciente para poder editar
+  const fetchAppointments = async (patientsList) => {
+    // Obtenemos las citas; la columna en la BD es "fechaCita" (timestamp ISO 8601)
     const { data, error } = await supabase
       .from('cita')
-      .select('idcita, descripcion, fecha, hora, idpaciente');
+      .select('idcita, estado, idpaciente, iddoctor, descripcion, fechaCita');
 
     if (error) {
       console.error('Error fetching appointments:', error);
       alert(error.message);
     } else {
-      const formattedData = data.map(appt => ({
-        idcita: appt.idcita,
-        title: appt.descripcion,
-        start: new Date(`${appt.fecha}T${appt.hora}`),
-        end: new Date(`${appt.fecha}T${appt.hora}`),
-        idpaciente: appt.idpaciente // Guardamos el id del paciente en el evento
-      }));
+      const lookup = patientsList || patients || [];
+      const formattedData = data.map(appt => {
+        // Buscamos el paciente por su id para mostrar el nombre completo como título
+        const patient = lookup.find(p => p.idpaciente === appt.idpaciente) || {};
+        const patientName = patient.nombres ? `${patient.nombres} ${patient.apellidos}` : '';
+        const title = patientName || appt.descripcion || 'Cita';
+        const start = appt.fechaCita ? new Date(appt.fechaCita) : null;
+
+        return {
+          id: appt.idcita,
+          idcita: appt.idcita,
+          title,
+          start,
+          end: start,
+          idpaciente: appt.idpaciente,
+          descripcion: appt.descripcion,
+          estado: appt.estado,
+        };
+      });
       setAppointments(formattedData);
     }
   };
@@ -94,13 +112,12 @@ const AppointmentsPage = () => {
     }
 
     try {
+      // Guardamos la fecha completa en la columna fechaCita (ISO 8601 / timestamptz)
       const eventData = {
-        fecha: moment(formData.start).format('YYYY-MM-DD'),
-        hora: moment(formData.start).format('HH:mm:ss'),
+        fechaCita: formData.start ? moment(formData.start).toISOString() : null,
         descripcion: formData.title,
-        // 3. Usamos el idpaciente seleccionado del formulario
         idpaciente: formData.idpaciente,
-        iddoctor: 1,   // Placeholder, puedes cambiarlo después
+        iddoctor: 1, // Placeholder, cámbialo según tu lógica
         estado: 'programada'
       };
 
