@@ -42,7 +42,7 @@ export default function DashboardPage() {
         const { data: appointments, error: appointmentsError } = await supabase
           .from('cita')
           .select('*, paciente(nombres, apellidos)') 
-          .eq('fecha', today);
+          .eq('fechaCita', today);
         if (appointmentsError) throw appointmentsError;
         setTodaysAppointments(appointments);
 
