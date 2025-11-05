@@ -13,8 +13,8 @@ const palette = {
   primary: '#3C607D', // Lapisázuli
   secondary: '#7192BE', // Azul grisáceo
   text: '#5C5C5D',      // Gris de Davy
-  background: '#D9DBBC', // Beige (el más claro)
-  white: '#FFFFFF'
+  background: ' #f9f7f350', // Beige (el más claro)
+  white: '#ffffffff'
 };
 // -------------------------
 

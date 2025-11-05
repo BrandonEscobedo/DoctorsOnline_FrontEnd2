@@ -11,7 +11,7 @@ const SolicitudCard = ({ numero, telefono, fecha_creacion, fecha_solicitada, nom
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <Avatar sx={{ width: 48, height: 48 }}>{nombres ? nombres.charAt(0) : 'S'}</Avatar>
+                <Avatar sx={{ width: 48, height: 48, bgcolor: '#3c607df8'}}>{nombres ? nombres.charAt(0) : 'S'}</Avatar>
                 <Box sx={{ flex: 1 }}>
                     <Typography variant="h6">{nombres}</Typography>
                     <Typography variant="body2" color="text.secondary">Solicitud #{numero}</Typography>
