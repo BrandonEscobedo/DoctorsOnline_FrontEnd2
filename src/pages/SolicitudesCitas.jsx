@@ -32,13 +32,7 @@ const SolicitudCard = ({
     }}>
         <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <Avatar sx={{ 
-                    width: 48, 
-                    height: 48,
-                    bgcolor: estado === 'Aceptada' ? '#4CAF50' : estado === 'Rechazada' ? '#f44336' : '#1976d2'
-                }}>
-                    {nombres ? nombres.charAt(0) : 'S'}
-                </Avatar>
+                <Avatar sx={{ width: 48, height: 48, bgcolor: '#3c607df8'}}>{nombres ? nombres.charAt(0) : 'S'}</Avatar>
                 <Box sx={{ flex: 1 }}>
                     <Typography variant="h6">{nombres}</Typography>
                     <Typography variant="body2" color="text.secondary">Solicitud #{numero}</Typography>
