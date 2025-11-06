@@ -15,11 +15,11 @@ import moment from 'moment';
 // --- Paleta de Colores (AJUSTADA) ---
 // <-- CAMBIO: Fondo de página ahora es un gris muy claro
 const palette = {
-  primary: '#3C607D',    // Lapisázuli (Se mantiene)
-  secondary: '#7192BE',  // Azul grisáceo (Se mantiene)
-  text: '#5C5C5D',       // Gris de Davy (Se mantiene)
-  pageBackground: '#F4F6F8', // <-- NUEVO FONDO GRIS CLARO
-  cardBackground: '#FFFFFF', // Blanco (Para el fondo de las tarjetas)
+ primary: '#3c607df8',
+  secondary: '#3b3e42ff',
+  text: '#5C5C5D',
+  pageBackground: '#b8b8ad36',
+  cardBackground: '#f9f7f350',
   white: '#FFFFFF'
 };
 // ------------------------------------
@@ -115,7 +115,7 @@ const PatientsPage = () => {
   };
 
   const handleDelete = async (patientId) => {
-    // ... (Tu lógica de handleDelete sin cambios) ...
+  
     if (window.confirm("¿Seguro que quieres eliminar a este paciente?")) {
       try {
         const { error } = await supabase.from('paciente').delete().eq('idpaciente', patientId);
@@ -183,7 +183,7 @@ const PatientsPage = () => {
         ))}
       </Grid>
       
-      {/* <-- El diálogo se mantiene con fondo blanco por defecto */}
+     
       <Dialog open={open} onClose={handleClose}>
         {/* <-- Título del diálogo con color primario */}
         <DialogTitle sx={{ color: palette.primary, fontWeight: 'bold' }}>
