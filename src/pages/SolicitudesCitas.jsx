@@ -28,11 +28,14 @@ const SolicitudCard = ({
         flexDirection: 'column', 
         justifyContent: 'space-between',
         opacity: isProcessing ? 0.6 : 1,
-        border: estado === 'Aceptada' ? '2px solid #4CAF50' : 'none'
+        border: estado === 'Aceptada' ? '2px solid #4CAF50' : 
+                estado === 'Rechazada' ? '2px solid #f44336' : 'none'
     }}>
         <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <Avatar sx={{ width: 48, height: 48, bgcolor: '#3c607df8'}}>{nombres ? nombres.charAt(0) : 'S'}</Avatar>
+                <Avatar sx={{ width: 48, height: 48, bgcolor: '#3c607df8' }}>
+                    {nombres ? nombres.charAt(0) : 'S'}
+                </Avatar>
                 <Box sx={{ flex: 1 }}>
                     <Typography variant="h6">{nombres}</Typography>
                     <Typography variant="body2" color="text.secondary">Solicitud #{numero}</Typography>
@@ -55,47 +58,58 @@ const SolicitudCard = ({
             <Typography variant="body2" sx={{ mb: 1 }}><b>Número de teléfono:</b> {telefono}</Typography>
             <Typography variant="body2" sx={{ mb: 1 }}><b>Fecha creación:</b> {fecha_creacion}</Typography>
             <Typography variant="body2" sx={{ mb: 1 }}><b>Fecha solicitada:</b> {fecha_solicitada}</Typography>
-
-            {estado === 'Aceptada' && (
-                <Alert severity="success" sx={{ mt: 1, mb: 1 }}>
-                    Cita ya fue aceptada y creada
-                </Alert>
-            )}
         </CardContent>
 
-        <Box sx={{ p: 2, pt: 0, display: 'flex', gap: 1 }}>
-            {isProcessing ? (
-                <CircularProgress size={24} />
-            ) : estado === 'Aceptada' ? (
-                <Button fullWidth size="small" color="success" disabled>
-                    ✅ Aceptada
-                </Button>
-            ) : conflicto ? (
-                <Button fullWidth size="small" color="warning" onClick={onResolve}>
-                    Resolver
-                </Button>
-            ) : (
+        {/* Mostrar botones solo si está pendiente */}
+        {(estado === 'Pendiente' || !estado) && (
+            <Box sx={{ p: 2, pt: 0, display: 'flex', gap: 1 }}>
+                {isProcessing ? (
+                    <CircularProgress size={24} />
+                ) : conflicto ? (
+                    <Button fullWidth size="small" color="warning" onClick={onResolve}>
+                        Resolver
+                    </Button>
+                ) : (
+                    <Button 
+                        fullWidth 
+                        size="small" 
+                        color="success" 
+                        startIcon={<CheckIcon />} 
+                        onClick={onAccept}
+                    >
+                        Aceptar
+                    </Button>
+                )}
                 <Button 
                     fullWidth 
                     size="small" 
-                    color="success" 
-                    startIcon={<CheckIcon />} 
-                    onClick={onAccept}
+                    color="error" 
+                    startIcon={<CloseIcon />} 
+                    onClick={onReject}
+                    disabled={isProcessing}
                 >
-                    Aceptar
+                    Rechazar
                 </Button>
-            )}
-            <Button 
-                fullWidth 
-                size="small" 
-                color="error" 
-                startIcon={<CloseIcon />} 
-                onClick={onReject}
-                disabled={isProcessing || estado === 'Aceptada'}
-            >
-                {estado === 'Rechazada' ? 'Rechazada' : 'Rechazar'}
-            </Button>
-        </Box>
+            </Box>
+        )}
+
+        {/* Mostrar estado fijo si ya fue procesada */}
+        {(estado === 'Aceptada' || estado === 'Rechazada') && (
+            <Box sx={{ p: 2, pt: 0 }}>
+                <Alert 
+                    severity={estado === 'Aceptada' ? 'success' : 'error'}
+                    sx={{ 
+                        '& .MuiAlert-message': { 
+                            width: '100%', 
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }
+                    }}
+                >
+                    {estado === 'Aceptada' ? 'CITA ACEPTADA' : 'CITA RECHAZADA'}
+                </Alert>
+            </Box>
+        )}
     </Card>
 );
 
@@ -110,7 +124,7 @@ const SolicitudesCitas = () => {
         try {
             setLoading(true);
             
-            // Obtener solicitudes
+            // Obtener solicitudes con los nuevos campos
             const { data: solicitudesData, error: errorSolicitudes } = await supabase
                 .from('SolicitudCita')
                 .select('*')
@@ -118,39 +132,21 @@ const SolicitudesCitas = () => {
 
             if (errorSolicitudes) throw errorSolicitudes;
 
-            // Obtener todas las citas para verificar estado
-            const { data: citasData, error: errorCitas } = await supabase
-                .from('cita')
-                .select('*');
+            // Transformar los datos usando los campos reales de la BD
+            const solicitudesTransformadas = solicitudesData.map(solicitud => ({
+                id: solicitud.idSolicitud,
+                numero: solicitud.idSolicitud,
+                telefono: solicitud.Telefono,
+                fecha_creacion: new Date(solicitud.fechaCreacion).toLocaleString(),
+                fecha_solicitada: new Date(solicitud.fechaCita).toLocaleString(),
+                nombres: solicitud.nombres,
+                edad: solicitud.edad,
+                correo: solicitud.correo,
+                estado: solicitud.estado || 'Pendiente', // Usa el campo de la BD
+                conflicto: solicitud.conflicto || false   // Usa el campo de la BD
+            }));
 
-            if (errorCitas) throw errorCitas;
-
-            // Mapear solicitudes con estado persistente
-            const solicitudesTransformadas = solicitudesData.map(solicitud => {
-                // Buscar si existe una cita para esta solicitud
-                const citaRelacionada = citasData.find(cita => {
-                    const coincideNombre = cita.descripcion?.includes(solicitud.nombres);
-                    const coincideFecha = cita.fechaCita && solicitud.fechaCita && 
-                        new Date(cita.fechaCita).getTime() === new Date(solicitud.fechaCita).getTime();
-                    return coincideNombre && coincideFecha;
-                });
-
-                const estado = citaRelacionada ? 'Aceptada' : 'Pendiente';
-                
-                return {
-                    id: solicitud.idSolicitud,
-                    numero: solicitud.idSolicitud,
-                    telefono: solicitud.Telefono,
-                    fecha_creacion: new Date(solicitud.fechaCreacion).toLocaleString(),
-                    fecha_solicitada: new Date(solicitud.fechaCita).toLocaleString(),
-                    nombres: solicitud.nombres,
-                    edad: solicitud.edad,
-                    correo: solicitud.correo,
-                    estado: estado,
-                    conflicto: false // Se calcula después
-                };
-            });
-
+            // Solo calcular conflictos para solicitudes pendientes
             const withConflictos = detectConflictos(solicitudesTransformadas);
             setSolicitudes(withConflictos);
 
@@ -171,7 +167,7 @@ const SolicitudesCitas = () => {
             const { data: citasExistentes, error: errorCitas } = await supabase
                 .from('cita')
                 .select('*')
-                .eq('descripcion', `Cita médica para ${solicitud.nombres} - Solicitud ${solicitud.id}`);
+                .eq('descripcion', `${solicitud.nombres} - Solicitud ${solicitud.id}`);
 
             if (errorCitas) {
                 console.error('Error verificando citas existentes:', errorCitas);
@@ -246,12 +242,25 @@ const SolicitudesCitas = () => {
 
             if (citaError) throw citaError;
 
+            // ACTUALIZAR EL ESTADO EN LA BASE DE DATOS
+            const { error: updateError } = await supabase
+                .from('SolicitudCita')
+                .update({ 
+                    estado: 'Aceptada',
+                    conflicto: false 
+                })
+                .eq('idSolicitud', solicitud.id);
+
+            if (updateError) {
+                console.error('Error actualizando solicitud:', updateError);
+            }
+
             // Actualizar estado local
             setSolicitudes(prev => 
                 prev.map(s => s.id === solicitud.id ? { 
                     ...s, 
                     estado: 'Aceptada',
-                    conflicto: false // Quitar conflicto al aceptar
+                    conflicto: false
                 } : s)
             );
 
@@ -275,16 +284,35 @@ const SolicitudesCitas = () => {
         try {
             setProcessingIds(prev => new Set(prev).add(solicitud.id));
 
+            // Verificar si ya fue rechazada anteriormente
+            if (solicitud.estado === 'Rechazada') {
+                showSnackbar('⚠️ Esta solicitud ya fue rechazada anteriormente', 'warning');
+                return;
+            }
+
+            // ACTUALIZAR EL ESTADO EN LA BASE DE DATOS
+            const { error: updateError } = await supabase
+                .from('SolicitudCita')
+                .update({ 
+                    estado: 'Rechazada',
+                    conflicto: false 
+                })
+                .eq('idSolicitud', solicitud.id);
+
+            if (updateError) {
+                throw updateError;
+            }
+
             // Actualizar el estado local
             setSolicitudes(prev => 
                 prev.map(s => s.id === solicitud.id ? { 
                     ...s, 
                     estado: 'Rechazada',
-                    conflicto: false // Quitar conflicto al rechazar
+                    conflicto: false
                 } : s)
             );
 
-            showSnackbar('Solicitud rechazada', 'info');
+            showSnackbar('Cita rechazada exitosamente', 'info');
 
         } catch (error) {
             console.error('Error al rechazar solicitud:', error);
@@ -298,11 +326,21 @@ const SolicitudesCitas = () => {
         }
     };
 
-    // Función para resolver conflicto - AHORA QUITA EL CONFLICTO PERMANENTEMENTE
+    // Función para resolver conflicto
     const handleResolverConflicto = async (solicitud) => {
         try {
             setProcessingIds(prev => new Set(prev).add(solicitud.id));
             
+            // ACTUALIZAR EN LA BASE DE DATOS
+            const { error: updateError } = await supabase
+                .from('SolicitudCita')
+                .update({ conflicto: false })
+                .eq('idSolicitud', solicitud.id);
+
+            if (updateError) {
+                console.error('Error actualizando conflicto:', updateError);
+            }
+
             // Quitar el conflicto permanentemente
             setSolicitudes(prev => 
                 prev.map(s => s.id === solicitud.id ? { 
@@ -325,7 +363,7 @@ const SolicitudesCitas = () => {
         }
     };
 
-    // Función para detectar conflictos - MÁS PRECISA
+    // Función para detectar conflictos
     const detectConflictos = (solicitudesArr) => {
         const fechaCounts = {};
         const solicitudesPendientes = solicitudesArr.filter(s => s.estado === 'Pendiente');
@@ -338,7 +376,7 @@ const SolicitudesCitas = () => {
         return solicitudesArr.map(solicitud => {
             // Solo marcar conflicto en solicitudes pendientes
             if (solicitud.estado !== 'Pendiente') {
-                return { ...solicitud, conflicto: false };
+                return { ...solicitud, conflicto: solicitud.conflicto || false };
             }
             
             const fecha = new Date(solicitud.fecha_solicitada).toDateString();
@@ -366,6 +404,7 @@ const SolicitudesCitas = () => {
         if (filter === 'conflicto') return s.conflicto && s.estado === 'Pendiente';
         if (filter === 'sin') return !s.conflicto && s.estado === 'Pendiente';
         if (filter === 'aceptadas') return s.estado === 'Aceptada';
+        if (filter === 'rechazadas') return s.estado === 'Rechazada';
         return true;
     });
 
@@ -424,12 +463,22 @@ const SolicitudesCitas = () => {
                 >
                     Aceptadas ({solicitudes.filter(s => s.estado === 'Aceptada').length})
                 </Button>
+                <Button 
+                    variant={filter === 'rechazadas' ? 'contained' : 'outlined'} 
+                    color="error" 
+                    size="small" 
+                    onClick={() => setFilter('rechazadas')}
+                >
+                    Rechazadas ({solicitudes.filter(s => s.estado === 'Rechazada').length})
+                </Button>
             </Box>
 
             {filtered.length === 0 ? (
                 <Typography variant="body1" sx={{ textAlign: 'center', mt: 4 }}>
                     {filter === 'aceptadas' 
                         ? 'No hay solicitudes aceptadas' 
+                        : filter === 'rechazadas'
+                        ? 'No hay solicitudes rechazadas'
                         : 'No hay solicitudes que coincidan con el filtro'}
                 </Typography>
             ) : (
