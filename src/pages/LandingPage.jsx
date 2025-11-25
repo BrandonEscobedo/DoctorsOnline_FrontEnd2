@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import doctorImage from '../img/Dr-Victor.jpg';
 
 const colors = {
   primary: '#457B9D',      // azul para acentos y títulos
@@ -159,7 +160,7 @@ const LandingPage = () => {
               border: '2px solid rgba(255,255,255,0.2)'
             }}>
               <img
-                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600"
+                src={doctorImage}
                 alt="Consultorio"
                 style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
               />
@@ -250,7 +251,7 @@ const LandingPage = () => {
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
           <div>
             <img
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600"
+              src={doctorImage}
               alt="Dr. Víctor Rodríguez"
               style={{ width: '100%', borderRadius: '20px', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
             />
